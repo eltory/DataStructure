@@ -1,2 +1,3 @@
 # Algorithm_Detail
-stack_array
+
+Impliment data structures for upcoming implimenting algorithms.
