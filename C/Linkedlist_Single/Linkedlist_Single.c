@@ -8,15 +8,10 @@ typedef struct node {
 	nptr next;
 }Node;
 
-typedef struct head* hptr;
-typedef struct head {
-	nptr next;
-}Head;
-
-hptr head = NULL;
+nptr head = NULL;
 
 nptr createNode(int);
-void Insert(nptr);
+void Insert(int);
 void Delete(int);
 nptr Search(int);
 void print();
@@ -25,11 +20,9 @@ int main() {
 
 	int selNum;
 	int key;
-	nptr tmp = NULL;
 
 	// make a head
-	head = (hptr)malloc(sizeof(Head));
-	head->next = NULL;
+	head = createNode(NULL);
 
 	while (1) {
 		printf("\n Select number ");
@@ -47,25 +40,25 @@ int main() {
 			printf("\n Enter the data you want to insert : ");
 			scanf(" %d", &key);
 
-			tmp = createNode(key);
-			if (tmp != NULL)
-				Insert(tmp);
+			Insert(key);
 			break;
 		case 2:
 			printf("\n Enter the data you want to delete : ");
 			scanf(" %d", &key);
-
-			Delete(key);
+			if (Search(key) == NULL)
+				printf("\n The data does not exist");
+			else
+				Delete(key);
 			break;
 		case 3:
 			print();
 			break;
 		case 4:
-			printf("\n Enter the data you want to delete : ");
+			printf("\n Enter the data you want to search : ");
 			scanf(" %d", &key);
 
 			if (Search(key) == NULL)
-				printf("\n The data is not exist");
+				printf("\n The data does not exist");
 			else
 				printf("\n The data can be found");
 			break;
@@ -89,13 +82,13 @@ nptr createNode(int key) {
 	return tmp;
 }
 
-void Insert(nptr node) {
-	nptr tmp = head->next;
+void Insert(int key) {
+	nptr tmp = head;
+	nptr node = createNode(key);
 
-	if (tmp == NULL) {
-		head->next = node;
+	if (node == NULL)
 		return;
-	}
+
 	while (tmp->next != NULL) {
 		tmp = tmp->next;
 	}
@@ -103,24 +96,17 @@ void Insert(nptr node) {
 }
 
 void Delete(int key) {
-	nptr tmp = head->next;
-	nptr find;
-
-	if (tmp == NULL) {
-		return;
-	}
+	nptr tmp = head;
+	nptr find = tmp->next;
 
 	// delete all duplicated data
-	while (Search(key) != NULL) {
-		find = Search(key);
-	
-		if (tmp == find) {
-			head->next = find->next;
-			free(find);
-		}else if (tmp->next == find) {
+	while (tmp->next != NULL) {
+		find = tmp->next;
+		if (find->key == key) {
 			tmp->next = find->next;
 			free(find);
-		}tmp = head->next;
+		}else
+			tmp = tmp->next;
 	}
 }
 
