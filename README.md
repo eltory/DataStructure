@@ -1,3 +1,3 @@
-# Algorithm_Detail
+# Data structure
 
-Impliment data structures for upcoming implimenting algorithms.
+Impliment data structures
