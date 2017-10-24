@@ -15,18 +15,18 @@ const int nv = 10; // Number of vertex
 
 bool adjMatrix[MAX][MAX];
 vector<vector<int>> adjLists;
-vector<bool> discovered;
+vector<int> discovered = {0};
 vector<bool> visited;
 
 // Spanning tree using DFS
-void DepthFirstSearch_List(int here){
+void DepthFirstSearch_List(int here, int from){
     visited[here] = true;
     
     for(int i = 0; i < adjLists[here].size(); ++i){
         int there = adjLists[here][i];
         if(!visited[there])
-            DepthFirstSearch_List(there);
-        else
+            DepthFirstSearch_List(there, here);
+        else if(there != from)
             adjLists[here].erase(adjLists[here].begin() + i);
     }
 }
@@ -34,19 +34,20 @@ void DepthFirstSearch_List(int here){
 // Spanning tree using BFS
 void BreadthFirstSearch_List(int start){
     queue<int> Q;
-    discovered[start] = true;
+    discovered[start]++;
     Q.push(start);
     
     while(!Q.empty()){
         int here = Q.front();
         Q.pop();
+        discovered[here]++;
         for(int i = 0; i < adjLists[here].size(); ++i){
             int there = adjLists[here][i];
-            if(!discovered[there]){
-                discovered[there] = true;
+            if(discovered[there] == 0){
+                discovered[there]++;
                 Q.push(there);
             }
-            else
+            else if(discovered[there] != 2)
                 adjLists[here].erase(adjLists[here].begin() + i);
         }
     }
