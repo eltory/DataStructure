@@ -1,3 +1,3 @@
 # Data structure
 
-Impliment data structures
+Impliment and Study data structures
